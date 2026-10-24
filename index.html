@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NVN GPS Tracker</title>
+<meta name="description" content="NVN GPS Tracker: rastreo de flotillas y personal sobre la plataforma NVN GPS.">
+<style>
+  :root { --marino: #0F172A; --marino-2: #16213A; --cian: #00E5FF; --plata: #94A3B8; --texto: #E2E8F0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { min-height: 100vh; background: var(--marino); color: var(--texto); font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; line-height: 1.55; display: flex; flex-direction: column; }
+  header, main, footer { width: 100%; max-width: 880px; margin: 0 auto; padding: 0 20px; }
+  header { display: flex; align-items: center; gap: 12px; padding-top: 28px; }
+  .logo { width: 40px; height: 40px; border-radius: 10px; background: var(--marino-2); border: 1px solid rgba(0,229,255,.35); display: grid; place-items: center; }
+  .marca { font-weight: 700; letter-spacing: .02em; }
+  .marca b { color: var(--cian); }
+  main { flex: 1; padding-top: 64px; padding-bottom: 48px; }
+  h1 { font-size: clamp(30px, 6vw, 46px); line-height: 1.15; margin-bottom: 16px; }
+  h1 span { color: var(--cian); }
+  .lead { color: var(--plata); font-size: 18px; max-width: 620px; }
+  .acciones { display: flex; flex-wrap: wrap; gap: 12px; margin: 32px 0 12px; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; border-radius: 10px; font-weight: 600; text-decoration: none; }
+  .btn-primario { background: var(--cian); color: var(--marino); }
+  .btn-primario:hover { filter: brightness(1.1); }
+  .btn-secundario { border: 1px solid rgba(148,163,184,.4); color: var(--texto); }
+  .btn-secundario:hover { border-color: var(--cian); }
+  .btn[aria-disabled="true"] { opacity: .45; pointer-events: none; }
+  .nota { font-size: 13px; color: var(--plata); }
+  .tarjetas { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 48px; }
+  .tarjeta { background: var(--marino-2); border: 1px solid rgba(148,163,184,.15); border-radius: 12px; padding: 18px; }
+  .tarjeta h2 { font-size: 16px; color: var(--cian); margin-bottom: 6px; }
+  .tarjeta p { font-size: 14px; color: var(--plata); }
+  .estado { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--plata); margin-top: 10px; }
+  .punto { width: 8px; height: 8px; border-radius: 50%; background: var(--plata); }
+  .punto.activo { background: #22C55E; box-shadow: 0 0 8px #22C55E; }
+  footer { padding-bottom: 28px; font-size: 13px; color: var(--plata); display: flex; flex-wrap: wrap; gap: 8px 20px; }
+  footer a { color: var(--plata); }
+  footer a:hover { color: var(--cian); }
+</style>
+</head>
+<body>
+<header>
+  <div class="logo" aria-hidden="true">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00E5FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+  </div>
+  <div class="marca">NVN <b>GPS</b> Tracker</div>
+</header>
+
+<main>
+  <h1>Tu flotilla, <span>en tiempo real</span>.</h1>
+  <p class="lead">NVN GPS Tracker convierte el teléfono en un dispositivo de rastreo que reporta a la plataforma NVN GPS. Desde el portal se ven las unidades en el mapa, su estado y sus alertas.</p>
+
+  <div class="acciones">
+    <a id="abrir" class="btn btn-primario" href="#" aria-disabled="true">Abrir plataforma →</a>
+    <a class="btn btn-secundario" href="privacidad.html">Aviso de privacidad</a>
+  </div>
+  <p class="estado"><span id="punto" class="punto"></span><span id="estado">Consultando la dirección de la plataforma…</span></p>
+
+  <div class="tarjetas">
+    <div class="tarjeta"><h2>Rastreo</h2><p>Posición, velocidad y batería del teléfono, enviadas al servidor de tu organización.</p></div>
+    <div class="tarjeta"><h2>Portal</h2><p>Mapa con las unidades en vivo, histórico y alertas de velocidad, paradas y movimiento.</p></div>
+    <div class="tarjeta"><h2>Sin publicidad</h2><p>La app no usa servicios de analítica ni identificadores de publicidad.</p></div>
+  </div>
+</main>
+
+<footer>
+  <span>© 2026 NVN GPS · serversatil.com</span>
+  <a href="privacidad.html">Aviso de privacidad</a>
+  <span>Basado en Traccar (Apache 2.0)</span>
+</footer>
+
+<script>
+  // La plataforma corre en un túnel temporal; su dirección vigente está en plataforma.json (fase 1, PLAT-010)
+  fetch('plataforma.json', { cache: 'no-store' })
+    .then(r => r.json())
+    .then(c => {
+      const a = document.getElementById('abrir');
+      a.href = c.url;
+      a.removeAttribute('aria-disabled');
+      document.getElementById('punto').classList.add('activo');
+      document.getElementById('estado').textContent = 'Plataforma en línea · actualizada ' + c.actualizada;
+    })
+    .catch(() => { document.getElementById('estado').textContent = 'La plataforma no está disponible en este momento.'; });
+</script>
+</body>
+</html>
