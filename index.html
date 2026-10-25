@@ -3,84 +3,263 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>NVN GPS Tracker</title>
-<meta name="description" content="NVN GPS Tracker: rastreo de flotillas y personal sobre la plataforma NVN GPS.">
+<title>NVN GPS · Rastreo de flotillas en tiempo real</title>
+<meta name="description" content="NVN GPS: rastreo de flotillas y personal en tiempo real, alertas, histórico y app para teléfono.">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root { --marino: #0F172A; --marino-2: #16213A; --cian: #00E5FF; --plata: #94A3B8; --texto: #E2E8F0; }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { min-height: 100vh; background: var(--marino); color: var(--texto); font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; line-height: 1.55; display: flex; flex-direction: column; }
-  header, main, footer { width: 100%; max-width: 880px; margin: 0 auto; padding: 0 20px; }
-  header { display: flex; align-items: center; gap: 12px; padding-top: 28px; }
-  .logo { width: 40px; height: 40px; border-radius: 10px; background: var(--marino-2); border: 1px solid rgba(0,229,255,.35); display: grid; place-items: center; }
-  .marca { font-weight: 700; letter-spacing: .02em; }
-  .marca b { color: var(--cian); }
-  main { flex: 1; padding-top: 64px; padding-bottom: 48px; }
-  h1 { font-size: clamp(30px, 6vw, 46px); line-height: 1.15; margin-bottom: 16px; }
-  h1 span { color: var(--cian); }
-  .lead { color: var(--plata); font-size: 18px; max-width: 620px; }
-  .acciones { display: flex; flex-wrap: wrap; gap: 12px; margin: 32px 0 12px; }
-  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; border-radius: 10px; font-weight: 600; text-decoration: none; }
-  .btn-primario { background: var(--cian); color: var(--marino); }
-  .btn-primario:hover { filter: brightness(1.1); }
-  .btn-secundario { border: 1px solid rgba(148,163,184,.4); color: var(--texto); }
-  .btn-secundario:hover { border-color: var(--cian); }
-  .btn[aria-disabled="true"] { opacity: .45; pointer-events: none; }
-  .nota { font-size: 13px; color: var(--plata); }
-  .tarjetas { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 48px; }
-  .tarjeta { background: var(--marino-2); border: 1px solid rgba(148,163,184,.15); border-radius: 12px; padding: 18px; }
-  .tarjeta h2 { font-size: 16px; color: var(--cian); margin-bottom: 6px; }
-  .tarjeta p { font-size: 14px; color: var(--plata); }
-  .estado { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--plata); margin-top: 10px; }
-  .punto { width: 8px; height: 8px; border-radius: 50%; background: var(--plata); }
-  .punto.activo { background: #22C55E; box-shadow: 0 0 8px #22C55E; }
-  footer { padding-bottom: 28px; font-size: 13px; color: var(--plata); display: flex; flex-wrap: wrap; gap: 8px 20px; }
-  footer a { color: var(--plata); }
-  footer a:hover { color: var(--cian); }
+/* Landing de nvn.serversatil.com (Diseñador Landing, L01 publicado). Marca de la app (azul marino, cian, plata) con Inter.
+   Ilustración propia en SVG: las imágenes de referencia solo inspiran (licencia desconocida). */
+:root {
+  --marino: #0F172A; --marino-2: #131d33; --marino-3: #1b2742; --cian: #00E5FF; --cian-2: #00b8d4; --plata: #94A3B8; --texto: #E2E8F0; --texto-2: #b6c2d3;
+  --linea: rgba(148,163,184,.16); --verde: #22C55E; --rojo: #ef4444; --ambar: #f59e0b; --radio: 12px;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--marino); color: var(--texto); font: 16px/1.55 Inter, system-ui, "Segoe UI", sans-serif; }
+a { color: inherit; }
+.contenedor { width: min(1180px, 100% - 40px); margin: 0 auto; }
+.aviso-proto { background: #3a2a0c; color: #fbbf24; font-size: 13px; padding: 6px 20px; text-align: center; }
+
+/* Navegación */
+.nav { position: sticky; top: 0; z-index: 20; backdrop-filter: blur(10px); background: rgba(15,23,42,.78); border-bottom: 1px solid var(--linea); }
+.nav .contenedor { display: flex; align-items: center; gap: 22px; height: 64px; }
+.marca { display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: .01em; text-decoration: none; }
+.marca .logo { width: 34px; height: 34px; border-radius: 9px; background: var(--marino-3); border: 1px solid rgba(0,229,255,.35); display: grid; place-items: center; }
+.marca b { color: var(--cian); }
+.nav nav { display: flex; gap: 18px; margin-left: auto; font-size: 14px; color: var(--texto-2); }
+.nav nav a { text-decoration: none; } .nav nav a:hover { color: var(--cian); }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 18px; border-radius: 10px; font-weight: 600; text-decoration: none; border: 1px solid transparent; cursor: pointer; font-size: 15px; font-family: inherit; }
+.btn-primario { background: var(--cian); color: var(--marino); } .btn-primario:hover { background: #5ef0ff; }
+.btn-secundario { border-color: rgba(148,163,184,.35); color: var(--texto); background: transparent; } .btn-secundario:hover { border-color: var(--cian); color: var(--cian); }
+.btn-chico { padding: 8px 14px; font-size: 14px; }
+.btn[aria-disabled="true"] { opacity: .5; pointer-events: none; }
+.btn:focus-visible, a:focus-visible, input:focus-visible, button:focus-visible { outline: 2px solid var(--cian); outline-offset: 2px; }
+
+/* Héroe */
+.heroe { position: relative; overflow: hidden; border-bottom: 1px solid var(--linea); }
+.heroe .contenedor { display: grid; grid-template-columns: 1.02fr 1fr; gap: 40px; align-items: center; padding: 64px 0 72px; position: relative; z-index: 2; }
+.etiqueta { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--cian); border: 1px solid rgba(0,229,255,.3); border-radius: 999px; padding: 4px 12px; background: rgba(0,229,255,.06); }
+h1 { font-size: clamp(34px, 5.2vw, 58px); line-height: 1.06; letter-spacing: -.02em; margin: 16px 0 16px; font-weight: 800; }
+h1 span { color: var(--cian); }
+.lead { color: var(--texto-2); font-size: 18px; max-width: 560px; margin: 0; }
+.acciones { display: flex; flex-wrap: wrap; gap: 12px; margin: 28px 0 14px; }
+.estado { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--plata); }
+.punto { width: 8px; height: 8px; border-radius: 50%; background: var(--plata); } .punto.activo { background: var(--verde); box-shadow: 0 0 8px var(--verde); }
+.escena { position: relative; aspect-ratio: 1 / .86; border-radius: 18px; overflow: hidden; border: 1px solid var(--linea);
+  background: radial-gradient(ellipse at 30% 20%, rgba(0,229,255,.12), transparent 55%), linear-gradient(160deg, #101a30, #0b1222); box-shadow: 0 30px 80px rgba(0,0,0,.45); }
+.escena svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.telefono { position: absolute; right: 6%; bottom: 7%; width: 40%; aspect-ratio: 9 / 17; border-radius: 26px; background: #0a0f1c; border: 2px solid #2a3755; box-shadow: 0 24px 60px rgba(0,0,0,.6), inset 0 0 0 4px #0f172a; padding: 10px; display: flex; flex-direction: column; gap: 8px; }
+.telefono .pantalla-mapa { flex: 1; border-radius: 16px; overflow: hidden; position: relative; background: #0f1a2e; }
+.telefono .ficha { background: var(--marino-3); border-radius: 12px; padding: 8px 10px; font-size: 11.5px; }
+.telefono .ficha b { display: block; font-size: 12.5px; }
+.telefono .ficha .fila { display: flex; justify-content: space-between; color: var(--texto-2); margin-top: 2px; }
+.pill { display: inline-flex; align-items: center; gap: 5px; font-size: 10.5px; padding: 1px 7px; border-radius: 999px; background: rgba(34,197,94,.14); color: #86efac; }
+.alerta-flot { position: absolute; left: 6%; top: 8%; background: rgba(19,29,51,.92); border: 1px solid rgba(239,68,68,.45); border-radius: 12px; padding: 9px 12px; font-size: 12.5px; display: flex; gap: 9px; align-items: center; box-shadow: 0 12px 30px rgba(0,0,0,.4); }
+.alerta-flot i { color: var(--rojo); font-size: 16px; }
+
+/* Secciones */
+section.bloque { padding: 72px 0; border-bottom: 1px solid var(--linea); }
+.titulo-sec { text-align: center; max-width: 680px; margin: 0 auto 40px; }
+.titulo-sec small { color: var(--cian); font-weight: 600; letter-spacing: .12em; text-transform: uppercase; font-size: 12px; }
+.titulo-sec h2 { font-size: clamp(26px, 3.4vw, 38px); margin: 8px 0 10px; letter-spacing: -.01em; }
+.titulo-sec p { color: var(--texto-2); margin: 0; }
+.rejilla { display: grid; gap: 16px; }
+.r3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } .r4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.tarjeta { background: linear-gradient(180deg, var(--marino-2), #101a2e); border: 1px solid var(--linea); border-radius: var(--radio); padding: 22px; transition: border-color .2s, transform .2s; }
+.tarjeta:hover { border-color: rgba(0,229,255,.4); transform: translateY(-2px); }
+.tarjeta .ico { width: 42px; height: 42px; border-radius: 10px; display: grid; place-items: center; background: rgba(0,229,255,.1); color: var(--cian); font-size: 20px; margin-bottom: 14px; }
+.tarjeta h3 { margin: 0 0 6px; font-size: 17px; } .tarjeta p { margin: 0; color: var(--texto-2); font-size: 14.5px; }
+.pasos { counter-reset: paso; }
+.paso { position: relative; padding-top: 52px; }
+.paso::before { counter-increment: paso; content: counter(paso, decimal-leading-zero); position: absolute; top: 0; left: 22px; font-size: 32px; font-weight: 800; color: transparent; -webkit-text-stroke: 1px rgba(0,229,255,.6); }
+.cta { text-align: center; padding: 72px 0; background: radial-gradient(ellipse at 50% 0%, rgba(0,229,255,.12), transparent 60%); }
+.cta h2 { font-size: clamp(26px, 3.6vw, 40px); margin: 0 0 12px; }
+footer { padding: 28px 0; color: var(--plata); font-size: 13px; }
+footer .contenedor { display: flex; flex-wrap: wrap; gap: 8px 22px; } footer a:hover { color: var(--cian); }
+
+/* ---------- Login ---------- */
+.acceso { min-height: calc(100vh - 30px); display: grid; grid-template-columns: 1.1fr 1fr; }
+.acceso .lado { position: relative; overflow: hidden; border-right: 1px solid var(--linea); background: linear-gradient(160deg, #101a30, #0b1222); display: flex; flex-direction: column; justify-content: flex-end; padding: 40px; }
+.acceso .lado svg { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .9; }
+.acceso .lado .texto { position: relative; z-index: 2; max-width: 440px; }
+.acceso .lado h2 { font-size: 30px; margin: 0 0 10px; line-height: 1.15; } .acceso .lado p { color: var(--texto-2); margin: 0; }
+.acceso .lado ul { list-style: none; padding: 0; margin: 18px 0 0; display: grid; gap: 8px; font-size: 14.5px; }
+.acceso .lado li i { color: var(--cian); margin-right: 8px; }
+.acceso .formulario { display: grid; place-items: center; padding: 40px 20px; }
+.caja { width: min(400px, 100%); }
+.caja h1 { font-size: 28px; margin: 22px 0 6px; } .caja .sub { color: var(--texto-2); margin: 0 0 24px; }
+.campo { display: block; margin-bottom: 16px; }
+.campo span { display: block; font-size: 13.5px; font-weight: 600; margin-bottom: 6px; }
+.entrada { position: relative; }
+.entrada i.izq { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--plata); }
+.entrada input { width: 100%; height: 46px; border-radius: 10px; border: 1px solid rgba(148,163,184,.3); background: var(--marino-2); color: var(--texto); padding: 0 44px 0 38px; font: inherit; }
+.entrada input:focus { border-color: var(--cian); box-shadow: 0 0 0 3px rgba(0,229,255,.15); outline: none; }
+.entrada input[aria-invalid="true"] { border-color: var(--rojo); }
+.ojo { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); background: transparent; border: 0; color: var(--plata); width: 34px; height: 34px; border-radius: 8px; cursor: pointer; }
+.ojo:hover { color: var(--cian); }
+.error-campo { color: #fca5a5; font-size: 13px; margin-top: 5px; }
+.mayus { color: var(--ambar); font-size: 13px; margin-top: 5px; }
+.fila-opc { display: flex; justify-content: space-between; align-items: center; font-size: 14px; margin: 4px 0 20px; gap: 10px; flex-wrap: wrap; }
+.fila-opc label { display: inline-flex; gap: 8px; align-items: center; color: var(--texto-2); cursor: pointer; }
+.fila-opc input { accent-color: var(--cian); width: 16px; height: 16px; }
+.enlace { background: none; border: 0; color: var(--cian); cursor: pointer; font: inherit; padding: 0; text-decoration: underline; text-underline-offset: 3px; }
+.mensaje { border-radius: 10px; padding: 10px 12px; font-size: 14px; margin-bottom: 16px; display: flex; gap: 9px; }
+.mensaje.error { background: rgba(239,68,68,.1); border: 1px solid rgba(239,68,68,.35); color: #fecaca; }
+.mensaje.info { background: rgba(0,229,255,.08); border: 1px solid rgba(0,229,255,.3); color: #bff6ff; }
+.btn-entrar { width: 100%; justify-content: center; height: 48px; font-size: 16px; }
+.btn-entrar[disabled] { opacity: .7; cursor: progress; }
+.legal { font-size: 12.5px; color: var(--plata); margin-top: 22px; text-align: center; }
+
+@media (max-width: 960px) {
+  .heroe .contenedor { grid-template-columns: 1fr; padding: 40px 0 48px; } .r3, .r4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .acceso { grid-template-columns: 1fr; } .acceso .lado { min-height: 260px; border-right: 0; border-bottom: 1px solid var(--linea); padding: 24px; }
+}
+@media (max-width: 620px) { .nav nav { display: none; } .r3, .r4 { grid-template-columns: 1fr; } .nav .contenedor { gap: 12px; } .nav .btn { margin-left: auto; } }
 </style>
 </head>
 <body>
-<header>
-  <div class="logo" aria-hidden="true">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00E5FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
-  </div>
-  <div class="marca">NVN <b>GPS</b> Tracker</div>
-</header>
 
-<main>
-  <h1>Tu flotilla, <span>en tiempo real</span>.</h1>
-  <p class="lead">NVN GPS Tracker convierte el teléfono en un dispositivo de rastreo que reporta a la plataforma NVN GPS. Desde el portal se ven las unidades en el mapa, su estado y sus alertas.</p>
+<!-- ======================= LANDING ======================= -->
+<div id="v-landing">
+  <header class="nav"><div class="contenedor">
+    <a class="marca" href="#inicio" aria-label="NVN GPS, inicio"><span class="logo" aria-hidden="true">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00E5FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span>NVN <b>GPS</b></a>
+    <nav aria-label="Secciones"><a href="#funciones">Funciones</a><a href="#como">Cómo funciona</a><a href="#para-quien">Para quién</a></nav>
+    <a class="btn btn-secundario btn-chico" href="#" data-plataforma aria-disabled="true"><i class="bi bi-box-arrow-in-right"></i> Acceder</a>
+  </div></header>
 
-  <div class="acciones">
-    <a id="abrir" class="btn btn-primario" href="#" aria-disabled="true">Abrir plataforma →</a>
-    <a class="btn btn-secundario" href="privacidad.html">Aviso de privacidad</a>
-  </div>
-  <p class="estado"><span id="punto" class="punto"></span><span id="estado">Consultando la dirección de la plataforma…</span></p>
+  <section class="heroe" id="inicio">
+    <div class="contenedor">
+      <div>
+        <span class="etiqueta"><i class="bi bi-broadcast"></i> Rastreo en tiempo real</span>
+        <h1>Tu flotilla, <span>visible</span> en cada kilómetro.</h1>
+        <p class="lead">NVN GPS reúne en un solo portal la ubicación de tus unidades, sus alertas y su historial. Funciona con equipos GPS y con la app NVN GPS Tracker en el teléfono.</p>
+        <div class="acciones">
+          <a id="abrir" class="btn btn-primario" href="#" data-plataforma aria-disabled="true"><i class="bi bi-map"></i> Abrir plataforma</a>
+          <a class="btn btn-secundario" href="#como">Ver cómo funciona</a>
+        </div>
+        <p class="estado"><span id="punto" class="punto"></span><span id="estado">Consultando la dirección de la plataforma…</span></p>
+      </div>
+      <div class="escena" aria-label="Ilustración: unidades recorriendo la ciudad con sus rutas iluminadas y un teléfono con el mapa">
+        <svg id="ciudad" viewBox="0 0 600 516" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg>
+        <div class="alerta-flot" role="img" aria-label="Ejemplo de alerta"><i class="bi bi-exclamation-octagon"></i><div><b>Exceso de velocidad</b><br><span style="color:var(--texto-2)">Unidad 07 · 84 km/h en zona de 60</span></div></div>
+        <div class="telefono" aria-hidden="true">
+          <div class="pantalla-mapa"><svg id="mini" viewBox="0 0 200 260" preserveAspectRatio="xMidYMid slice" style="width:100%;height:100%"></svg></div>
+          <div class="ficha"><b>Unidad 03 · Reparto</b><div class="fila"><span>En ruta</span><span class="pill">● en línea</span></div><div class="fila"><span>52 km/h</span><span>hace 4 s</span></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <div class="tarjetas">
-    <div class="tarjeta"><h2>Rastreo</h2><p>Posición, velocidad y batería del teléfono, enviadas al servidor de tu organización.</p></div>
-    <div class="tarjeta"><h2>Portal</h2><p>Mapa con las unidades en vivo, histórico y alertas de velocidad, paradas y movimiento.</p></div>
-    <div class="tarjeta"><h2>Sin publicidad</h2><p>La app no usa servicios de analítica ni identificadores de publicidad.</p></div>
-  </div>
-</main>
+  <section class="bloque" id="funciones"><div class="contenedor">
+    <div class="titulo-sec"><small>Funciones</small><h2>Todo lo que necesitas para operar tu flotilla</h2><p>Del mapa en vivo al reporte del mes, sin cambiar de herramienta.</p></div>
+    <div class="rejilla r3">
+      <div class="tarjeta"><div class="ico"><i class="bi bi-geo-alt"></i></div><h3>Mapa en vivo</h3><p>Cada unidad con su posición, velocidad y estado, actualizada al momento.</p></div>
+      <div class="tarjeta"><div class="ico"><i class="bi bi-bell"></i></div><h3>Alertas</h3><p>Exceso de velocidad, detenciones y botón de pánico (SOS), en el portal y al instante.</p></div>
+      <div class="tarjeta"><div class="ico"><i class="bi bi-clock-history"></i></div><h3>Histórico y reportes</h3><p>Recorrido de cualquier día, viajes, detenciones y exportación a Excel.</p></div>
+      <div class="tarjeta"><div class="ico"><i class="bi bi-phone"></i></div><h3>App NVN GPS Tracker</h3><p>El teléfono de tu personal se vuelve un rastreador; sin publicidad ni analítica.</p></div>
+      <div class="tarjeta"><div class="ico"><i class="bi bi-cpu"></i></div><h3>Equipos GPS</h3><p>Compatible con equipos de mercado; la plataforma recibe varios protocolos.</p></div>
+      <div class="tarjeta"><div class="ico"><i class="bi bi-people"></i></div><h3>Accesos por rol</h3><p>Monitoristas, gerencia y clientes ven solo lo que les corresponde.</p></div>
+    </div>
+  </div></section>
 
-<footer>
-  <span>© 2026 NVN GPS · serversatil.com</span>
-  <a href="privacidad.html">Aviso de privacidad</a>
-  <span>Basado en Traccar (Apache 2.0)</span>
-</footer>
+  <section class="bloque" id="como"><div class="contenedor">
+    <div class="titulo-sec"><small>Cómo funciona</small><h2>En tres pasos</h2></div>
+    <div class="rejilla r3 pasos">
+      <div class="tarjeta paso"><h3>Conecta tus unidades</h3><p>Instala un equipo GPS o la app NVN GPS Tracker en el teléfono de cada unidad o persona.</p></div>
+      <div class="tarjeta paso"><h3>Reportan solas</h3><p>Cada unidad envía su posición a la plataforma; tú no haces nada más.</p></div>
+      <div class="tarjeta paso"><h3>Decide con datos</h3><p>Entra al portal: mapa en vivo, alertas e historial listos para tu operación.</p></div>
+    </div>
+  </div></section>
+
+  <section class="bloque" id="para-quien"><div class="contenedor">
+    <div class="titulo-sec"><small>Para quién</small><h2>Hecho para la operación diaria</h2></div>
+    <div class="rejilla r4">
+      <div class="tarjeta"><div class="ico"><i class="bi bi-box-seam"></i></div><h3>Reparto</h3><p>Entregas y rutas urbanas.</p></div>
+      <div class="tarjeta"><div class="ico"><i class="bi bi-truck"></i></div><h3>Carga</h3><p>Tractocamiones y rutas largas.</p></div>
+      <div class="tarjeta"><div class="ico"><i class="bi bi-thermometer-snow"></i></div><h3>Frío</h3><p>Unidades refrigeradas.</p></div>
+      <div class="tarjeta"><div class="ico"><i class="bi bi-person-badge"></i></div><h3>Personal en campo</h3><p>Técnicos y supervisores.</p></div>
+    </div>
+  </div></section>
+
+  <section class="cta"><div class="contenedor">
+    <h2>¿Listo para ver tu flotilla?</h2>
+    <p class="lead" style="margin:0 auto 24px">Entra con la cuenta que te dio tu administrador.</p>
+    <a class="btn btn-primario" href="#" data-plataforma aria-disabled="true"><i class="bi bi-box-arrow-in-right"></i> Acceder a la plataforma</a>
+  </div></section>
+
+  <footer><div class="contenedor"><span>© 2026 NVN GPS · serversatil.com</span><a href="privacidad.html">Aviso de privacidad</a></div></footer>
+</div>
 
 <script>
-  // La plataforma corre en un túnel temporal; su dirección vigente está en plataforma.json (fase 1, PLAT-010)
-  fetch('plataforma.json', { cache: 'no-store' })
-    .then(r => r.json())
-    .then(c => {
-      const a = document.getElementById('abrir');
-      a.href = c.url;
-      a.removeAttribute('aria-disabled');
-      document.getElementById('punto').classList.add('activo');
-      document.getElementById('estado').textContent = 'Plataforma en línea · actualizada ' + c.actualizada;
-    })
-    .catch(() => { document.getElementById('estado').textContent = 'La plataforma no está disponible en este momento.'; });
+/* ---------- Ilustración: calles en perspectiva, rutas iluminadas que avanzan y unidades que circulan ---------- */
+function ciudad(svg, conPines) {
+  const ns = 'http://www.w3.org/2000/svg', W = 600, H = 516;
+  const el = (t, a) => { const e = document.createElementNS(ns, t); for (const k in a) e.setAttribute(k, a[k]); return e; };
+  svg.innerHTML = `<defs><filter id="b-${svg.id}" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3"/></filter>
+    <linearGradient id="h-${svg.id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b1222" stop-opacity="1"/><stop offset=".35" stop-color="#0b1222" stop-opacity="0"/></linearGradient></defs>`;
+  const g = el('g', { transform: 'translate(300 250) skewX(-28) scale(1 .62) translate(-300 -250)' }); // perspectiva
+  svg.appendChild(g);
+  // Manzanas
+  for (let x = -120; x < 760; x += 120) for (let y = -60; y < 640; y += 110) {
+    g.appendChild(el('rect', { x: x + 14, y: y + 14, width: 92, height: 82, rx: 6, fill: '#15213a', stroke: '#1f2e4d', 'stroke-width': 1 }));
+    if ((x + y) % 240 === 0) g.appendChild(el('rect', { x: x + 26, y: y + 26, width: 30, height: 24, rx: 3, fill: '#1c2a47' }));
+  }
+  // Calles (líneas guía)
+  for (let x = -120; x < 760; x += 120) g.appendChild(el('line', { x1: x + 7, y1: -80, x2: x + 7, y2: 660, stroke: '#24365a', 'stroke-width': 1, 'stroke-dasharray': '10 12' }));
+  for (let y = -60; y < 640; y += 110) g.appendChild(el('line', { x1: -140, y1: y + 7, x2: 780, y2: y + 7, stroke: '#24365a', 'stroke-width': 1, 'stroke-dasharray': '10 12' }));
+  // Rutas (siguen las calles) con brillo
+  const RUTAS = ['M-120 117 H247 V447 H607 V667', 'M487 -80 V227 H127 V557 H-140', 'M780 337 H367 V7 H-140', 'M7 -80 V337 H487 V667'];
+  const rutas = RUTAS.map((d, i) => {
+    g.appendChild(el('path', { d, fill: 'none', stroke: '#00E5FF', 'stroke-width': 7, opacity: .18, filter: `url(#b-${svg.id})` }));
+    const p = el('path', { d, fill: 'none', stroke: i % 2 ? '#38bdf8' : '#00E5FF', 'stroke-width': 2.2, 'stroke-dasharray': '14 10', 'stroke-linecap': 'round', opacity: .9 });
+    g.appendChild(p); return p;
+  });
+  // Unidades
+  const unidades = rutas.map((p, i) => { const u = el('g', {}); u.appendChild(el('rect', { x: -9, y: -6, width: 18, height: 12, rx: 3, fill: i === 2 ? '#ef4444' : '#e2e8f0' }));
+    u.appendChild(el('circle', { r: 16, fill: i === 2 ? '#ef4444' : '#00E5FF', opacity: .16 })); g.appendChild(u); return { u, p, L: p.getTotalLength(), v: 0.035 + i * 0.008, f: i * 0.23 }; });
+  // Pines y geocerca
+  if (conPines) [[247, 447], [487, 227], [367, 7]].forEach(([x, y], i) => {
+    g.appendChild(el('circle', { cx: x, cy: y, r: 26, fill: 'none', stroke: '#00E5FF', 'stroke-width': 1.2, opacity: .5, class: 'pulso', 'data-f': i }));
+    g.appendChild(el('circle', { cx: x, cy: y, r: 6, fill: '#00E5FF' }));
+  });
+  svg.appendChild(el('rect', { x: 0, y: 0, width: W, height: H, fill: `url(#h-${svg.id})` }));
+  return { rutas, unidades, pulsos: [...svg.querySelectorAll('.pulso')] };
+}
+function miniMapa(svg) {
+  const ns = 'http://www.w3.org/2000/svg';
+  svg.innerHTML = `<rect width="200" height="260" fill="#0f1a2e"/>${[30, 80, 130, 180].map((x) => `<line x1="${x}" y1="0" x2="${x}" y2="260" stroke="#1d2b47" stroke-width="6"/>`).join('')}
+    ${[40, 100, 160, 220].map((y) => `<line x1="0" y1="${y}" x2="200" y2="${y}" stroke="#1d2b47" stroke-width="6"/>`).join('')}
+    <path id="mini-r" d="M30 250 V160 H130 V40 H190" fill="none" stroke="#00E5FF" stroke-width="3" stroke-dasharray="8 6" stroke-linecap="round"/>
+    <circle id="mini-u" r="6" fill="#e2e8f0" stroke="#00E5FF" stroke-width="2"/>`;
+  return { r: svg.querySelector('#mini-r'), u: svg.querySelector('#mini-u') };
+}
+const escenas = [ciudad(document.getElementById('ciudad'), true)];
+const mini = miniMapa(document.getElementById('mini'));
+// La animación la hace el código (se ve aunque el sistema reduzca animaciones), lenta y discreta
+let t0 = performance.now();
+function cuadro(ahora) {
+  const t = (ahora - t0) / 1000;
+  for (const e of escenas) {
+    e.rutas.forEach((p, i) => p.setAttribute('stroke-dashoffset', String(-(t * 26 + i * 7) % 24)));
+    e.unidades.forEach((x) => { const pt = x.p.getPointAtLength(((x.f + t * x.v) % 1) * x.L); x.u.setAttribute('transform', `translate(${pt.x} ${pt.y})`); });
+    e.pulsos.forEach((c) => { const k = ((t * 0.6 + +c.dataset.f * 0.33) % 1); c.setAttribute('r', String(8 + k * 30)); c.setAttribute('opacity', String(.6 * (1 - k))); });
+  }
+  const L = mini.r.getTotalLength(), pt = mini.r.getPointAtLength(((t * 0.06) % 1) * L);
+  mini.u.setAttribute('cx', pt.x); mini.u.setAttribute('cy', pt.y); mini.r.setAttribute('stroke-dashoffset', String(-(t * 20) % 14));
+  requestAnimationFrame(cuadro);
+}
+requestAnimationFrame(cuadro);
+
+/* ---------- Dirección vigente de la plataforma: plataforma.json (la actualiza WebOps cuando cambia) ---------- */
+fetch('plataforma.json', { cache: 'no-store' }).then((r) => (r.ok ? r.json() : Promise.reject())).then((c) => {
+  document.querySelectorAll('[data-plataforma]').forEach((a) => { a.href = c.url; a.removeAttribute('aria-disabled'); });
+  document.getElementById('punto').classList.add('activo');
+  document.getElementById('estado').textContent = `Plataforma en línea · actualizada ${c.actualizada}`;
+}).catch(() => { document.getElementById('estado').textContent = 'La plataforma no está disponible en este momento.'; });
 </script>
 </body>
 </html>
