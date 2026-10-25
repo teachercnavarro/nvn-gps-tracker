@@ -3,11 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Aviso de privacidad · NVN GPS Tracker</title>
+<title>Aviso de privacidad · NVN GPS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
   :root { --marino: #0F172A; --marino-2: #16213A; --cian: #00E5FF; --plata: #94A3B8; --texto: #E2E8F0; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--marino); color: var(--texto); font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; line-height: 1.6; }
+  body { background: var(--marino); color: var(--texto); font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; line-height: 1.6; }
   main { max-width: 760px; margin: 0 auto; padding: 32px 20px 56px; }
   a { color: var(--cian); }
   h1 { font-size: 28px; margin: 18px 0 6px; }
@@ -16,37 +18,37 @@
   ul { padding-left: 20px; display: grid; gap: 4px; }
   .meta { color: var(--plata); font-size: 13px; }
   .borrador { background: var(--marino-2); border-left: 3px solid var(--cian); padding: 10px 14px; border-radius: 6px; color: var(--plata); font-size: 14px; margin-top: 16px; }
+  .destacado { background: var(--marino-2); border: 1px solid rgba(0,229,255,.25); padding: 12px 14px; border-radius: 8px; margin-top: 8px; }
 </style>
 </head>
 <body>
 <main>
-  <a href="index.html">← NVN GPS Tracker</a>
+  <a href="index.html">← NVN GPS</a>
   <h1>Aviso de privacidad</h1>
-  <p class="meta">NVN GPS Tracker · versión 0.1 · 24 de octubre de 2026</p>
-  <p class="borrador">Borrador para pruebas. Está pendiente de revisión legal y de los datos de contacto definitivos del responsable.</p>
+  <p class="meta">NVN GPS · versión 0.2 · 25 de octubre de 2026</p>
+  <p class="borrador">Borrador. Está pendiente de revisión legal y de los datos de contacto definitivos del responsable.</p>
 
-  <h2>1. Qué hace la app</h2>
-  <p>NVN GPS Tracker envía la ubicación del teléfono al servidor de la plataforma NVN GPS que configure la organización que la utiliza (por ejemplo, para el seguimiento de una flotilla).</p>
+  <h2>1. Alcance</h2>
+  <p>Este sitio y el portal NVN GPS sirven para el <b>seguimiento de vehículos</b> de una flotilla, a partir de los equipos GPS instalados en las unidades.</p>
+  <p class="destacado">Desde la web no se rastrea a personas ni a teléfonos, y este sitio no obtiene la ubicación de quien lo visita.</p>
 
-  <h2>2. Datos que se recopilan</h2>
+  <h2>2. Datos que se tratan en el portal</h2>
   <ul>
-    <li>Ubicación: latitud, longitud, velocidad, rumbo, altitud y precisión; incluso con la app en segundo plano mientras el rastreo está activo.</li>
-    <li>Estado del teléfono: nivel de batería, si está cargando y si está en movimiento.</li>
-    <li>El identificador del dispositivo que se escribe en la app.</li>
-    <li>Alarmas que el usuario envía desde la app (por ejemplo, SOS).</li>
+    <li>De los vehículos: posición, velocidad, rumbo, encendido o apagado, kilometraje y alertas (por ejemplo, exceso de velocidad o botón de pánico del vehículo), enviados por sus equipos GPS.</li>
+    <li>De las personas usuarias del portal: nombre y correo, para iniciar sesión y mostrar solo la información que su rol permite.</li>
   </ul>
 
   <h2>3. Para qué se usan</h2>
-  <p>Solo para mostrar la posición y el historial del dispositivo en la plataforma, generar alertas (velocidad, paradas, movimiento) y reportes para la organización.</p>
+  <p>Para mostrar la ubicación y el historial de los vehículos, generar alertas y reportes, y apoyar la operación de la organización dueña de la flotilla.</p>
 
   <h2>4. Con quién se comparten</h2>
-  <p>Los datos se envían únicamente al servidor configurado en la app. La app no usa servicios de analítica, publicidad ni identificadores de publicidad, y no vende ni comparte los datos con terceros.</p>
+  <p>Solo con la organización responsable de la flotilla y con las personas a las que ella da acceso. El sitio no usa servicios de analítica, publicidad ni identificadores de publicidad, y no vende ni comparte los datos con terceros.</p>
 
-  <h2>5. Cuándo se recopilan y cómo detenerlo</h2>
-  <p>Solo mientras el rastreo está activado. Se puede detener en cualquier momento desde la app o retirando el permiso de ubicación en los ajustes del teléfono.</p>
+  <h2>5. Ubicación desde un teléfono</h2>
+  <p>La ubicación desde un teléfono <b>no forma parte de este sitio ni del portal</b>. Para esa función se necesita una aplicación aparte, que la persona instala y activa por decisión propia. Esa aplicación tiene su propio aviso de privacidad, que se muestra antes de activarla, y se puede desactivar en cualquier momento.</p>
 
   <h2>6. Conservación</h2>
-  <p>El historial se conserva en el servidor de la plataforma el tiempo que defina la organización. La persona usuaria puede pedir su eliminación a la organización responsable.</p>
+  <p>El historial de los vehículos se conserva el tiempo que defina la organización responsable. Las personas usuarias pueden pedir a esa organización la baja de su cuenta.</p>
 
   <h2>7. Contacto</h2>
   <p>Responsable: NVN GPS (serversatil.com). Correo de contacto: por definir.</p>

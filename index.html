@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>NVN GPS · Rastreo de flotillas en tiempo real</title>
-<meta name="description" content="NVN GPS: rastreo de flotillas y personal en tiempo real, alertas, histórico y app para teléfono.">
+<meta name="description" content="NVN GPS: seguimiento de flotillas vehiculares en tiempo real, alertas, histórico y reportes.">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -136,14 +136,14 @@ footer .contenedor { display: flex; flex-wrap: wrap; gap: 8px 22px; } footer a:h
       <div>
         <span class="etiqueta"><i class="bi bi-broadcast"></i> Rastreo en tiempo real</span>
         <h1>Tu flotilla, <span>visible</span> en cada kilómetro.</h1>
-        <p class="lead">NVN GPS reúne en un solo portal la ubicación de tus unidades, sus alertas y su historial. Funciona con equipos GPS y con la app NVN GPS Tracker en el teléfono.</p>
+        <p class="lead">NVN GPS reúne en un solo portal la ubicación de tus unidades, sus alertas y su historial. Funciona con los equipos GPS instalados en tus vehículos.</p>
         <div class="acciones">
           <a id="abrir" class="btn btn-primario" href="#" data-plataforma aria-disabled="true"><i class="bi bi-map"></i> Abrir plataforma</a>
           <a class="btn btn-secundario" href="#como">Ver cómo funciona</a>
         </div>
         <p class="estado"><span id="punto" class="punto"></span><span id="estado">Consultando la dirección de la plataforma…</span></p>
       </div>
-      <div class="escena" aria-label="Ilustración: unidades recorriendo la ciudad con sus rutas iluminadas y un teléfono con el mapa">
+      <div class="escena" aria-label="Ilustración: vehículos recorriendo la ciudad con sus rutas iluminadas y el mapa del portal en un teléfono">
         <svg id="ciudad" viewBox="0 0 600 516" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg>
         <div class="alerta-flot" role="img" aria-label="Ejemplo de alerta"><i class="bi bi-exclamation-octagon"></i><div><b>Exceso de velocidad</b><br><span style="color:var(--texto-2)">Unidad 07 · 84 km/h en zona de 60</span></div></div>
         <div class="telefono" aria-hidden="true">
@@ -160,7 +160,7 @@ footer .contenedor { display: flex; flex-wrap: wrap; gap: 8px 22px; } footer a:h
       <div class="tarjeta"><div class="ico"><i class="bi bi-geo-alt"></i></div><h3>Mapa en vivo</h3><p>Cada unidad con su posición, velocidad y estado, actualizada al momento.</p></div>
       <div class="tarjeta"><div class="ico"><i class="bi bi-bell"></i></div><h3>Alertas</h3><p>Exceso de velocidad, detenciones y botón de pánico (SOS), en el portal y al instante.</p></div>
       <div class="tarjeta"><div class="ico"><i class="bi bi-clock-history"></i></div><h3>Histórico y reportes</h3><p>Recorrido de cualquier día, viajes, detenciones y exportación a Excel.</p></div>
-      <div class="tarjeta"><div class="ico"><i class="bi bi-phone"></i></div><h3>App NVN GPS Tracker</h3><p>El teléfono de tu personal se vuelve un rastreador; sin publicidad ni analítica.</p></div>
+      <div class="tarjeta"><div class="ico"><i class="bi bi-diagram-3"></i></div><h3>Flotas por grupo</h3><p>Organiza tus vehículos por grupo (reparto, carga, frío) y consulta cada uno.</p></div>
       <div class="tarjeta"><div class="ico"><i class="bi bi-cpu"></i></div><h3>Equipos GPS</h3><p>Compatible con equipos de mercado; la plataforma recibe varios protocolos.</p></div>
       <div class="tarjeta"><div class="ico"><i class="bi bi-people"></i></div><h3>Accesos por rol</h3><p>Monitoristas, gerencia y clientes ven solo lo que les corresponde.</p></div>
     </div>
@@ -169,8 +169,8 @@ footer .contenedor { display: flex; flex-wrap: wrap; gap: 8px 22px; } footer a:h
   <section class="bloque" id="como"><div class="contenedor">
     <div class="titulo-sec"><small>Cómo funciona</small><h2>En tres pasos</h2></div>
     <div class="rejilla r3 pasos">
-      <div class="tarjeta paso"><h3>Conecta tus unidades</h3><p>Instala un equipo GPS o la app NVN GPS Tracker en el teléfono de cada unidad o persona.</p></div>
-      <div class="tarjeta paso"><h3>Reportan solas</h3><p>Cada unidad envía su posición a la plataforma; tú no haces nada más.</p></div>
+      <div class="tarjeta paso"><h3>Conecta tus unidades</h3><p>Instala un equipo GPS en cada vehículo de tu flotilla.</p></div>
+      <div class="tarjeta paso"><h3>Reportan solas</h3><p>Cada vehículo envía su posición a la plataforma; tú no haces nada más.</p></div>
       <div class="tarjeta paso"><h3>Decide con datos</h3><p>Entra al portal: mapa en vivo, alertas e historial listos para tu operación.</p></div>
     </div>
   </div></section>
@@ -181,7 +181,7 @@ footer .contenedor { display: flex; flex-wrap: wrap; gap: 8px 22px; } footer a:h
       <div class="tarjeta"><div class="ico"><i class="bi bi-box-seam"></i></div><h3>Reparto</h3><p>Entregas y rutas urbanas.</p></div>
       <div class="tarjeta"><div class="ico"><i class="bi bi-truck"></i></div><h3>Carga</h3><p>Tractocamiones y rutas largas.</p></div>
       <div class="tarjeta"><div class="ico"><i class="bi bi-thermometer-snow"></i></div><h3>Frío</h3><p>Unidades refrigeradas.</p></div>
-      <div class="tarjeta"><div class="ico"><i class="bi bi-person-badge"></i></div><h3>Personal en campo</h3><p>Técnicos y supervisores.</p></div>
+      <div class="tarjeta"><div class="ico"><i class="bi bi-tools"></i></div><h3>Servicio</h3><p>Camionetas y unidades de servicio.</p></div>
     </div>
   </div></section>
 
