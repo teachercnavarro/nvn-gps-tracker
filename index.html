@@ -24,8 +24,16 @@ a { color: inherit; }
 .aviso-proto { background: #3a2a0c; color: #fbbf24; font-size: 13px; padding: 6px 20px; text-align: center; }
 
 /* Navegación */
-.nav { position: sticky; top: 0; z-index: 20; backdrop-filter: blur(10px); background: rgba(15,23,42,.78); border-bottom: 1px solid var(--linea); }
+/* Barra transparente arriba; al bajar se vuelve translúcida con desenfoque (idea de la prueba con Lovable, 2026-10-26) */
+.nav { position: sticky; top: 0; z-index: 20; background: transparent; border-bottom: 1px solid transparent; transition: background-color .3s, border-color .3s, backdrop-filter .3s; }
+.nav.solida { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); background: rgba(15,23,42,.78); border-bottom-color: var(--linea); }
 .nav .contenedor { display: flex; align-items: center; gap: 22px; height: 64px; }
+.menu-btn { display: none; width: 44px; height: 44px; border-radius: 10px; border: 1px solid rgba(148,163,184,.35); background: transparent; color: var(--texto); font-size: 20px; cursor: pointer; }
+.menu-btn:hover { border-color: var(--cian); color: var(--cian); }
+.menu-movil { border-top: 1px solid var(--linea); padding: 6px 0 10px; }
+.menu-movil nav.contenedor { display: flex; flex-direction: column; align-items: stretch; gap: 2px; height: auto; margin: 0 auto; font-size: 16px; color: var(--texto); }
+.menu-movil a { display: flex; align-items: center; min-height: 48px; padding: 0 12px; border-radius: 10px; text-decoration: none; font-weight: 500; }
+.menu-movil a:hover { background: var(--marino-3); color: var(--cian); }
 .marca { display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: .01em; text-decoration: none; }
 .marca .logo { width: 34px; height: 34px; border-radius: 9px; background: var(--marino-3); border: 1px solid rgba(0,229,255,.35); display: grid; place-items: center; }
 .marca b { color: var(--cian); }
@@ -57,8 +65,12 @@ h1 span { color: var(--cian); }
 .telefono .ficha b { display: block; font-size: 12.5px; }
 .telefono .ficha .fila { display: flex; justify-content: space-between; color: var(--texto-2); margin-top: 2px; }
 .pill { display: inline-flex; align-items: center; gap: 5px; font-size: 10.5px; padding: 1px 7px; border-radius: 999px; background: rgba(34,197,94,.14); color: #86efac; }
-.alerta-flot { position: absolute; left: 6%; top: 8%; background: rgba(19,29,51,.92); border: 1px solid rgba(239,68,68,.45); border-radius: 12px; padding: 9px 12px; font-size: 12.5px; display: flex; gap: 9px; align-items: center; box-shadow: 0 12px 30px rgba(0,0,0,.4); }
-.alerta-flot i { color: var(--rojo); font-size: 16px; }
+/* Aviso intermitente en ámbar (precaución; el rojo queda para SOS): aparece y desaparece cada 3.5 s */
+.alerta-flot { position: absolute; left: 6%; top: 8%; background: rgba(19,29,51,.92); border: 1px solid rgba(245,158,11,.5); border-radius: 12px; padding: 9px 12px; font-size: 12.5px; display: flex; gap: 9px; align-items: center; box-shadow: 0 12px 30px rgba(0,0,0,.4);
+  transition: opacity .5s, transform .5s; }
+.alerta-flot.oculta { opacity: 0; transform: translateY(-8px); }
+.alerta-flot i { color: var(--ambar); font-size: 16px; }
+.alerta-flot b { color: #fbbf24; }
 
 /* Secciones */
 section.bloque { padding: 72px 0; border-bottom: 1px solid var(--linea); }
@@ -75,6 +87,16 @@ section.bloque { padding: 72px 0; border-bottom: 1px solid var(--linea); }
 .pasos { counter-reset: paso; }
 .paso { position: relative; padding-top: 52px; }
 .paso::before { counter-increment: paso; content: counter(paso, decimal-leading-zero); position: absolute; top: 0; left: 22px; font-size: 32px; font-weight: 800; color: transparent; -webkit-text-stroke: 1px rgba(0,229,255,.6); }
+/* Para quién: pestañas con ilustración del tipo de vehículo */
+.pestanas { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 18px; }
+.pestana { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid rgba(148,163,184,.3); background: var(--marino-2); color: var(--texto-2); font: 600 15px Inter, system-ui, sans-serif; cursor: pointer; }
+.pestana:hover { border-color: var(--cian); color: var(--texto); }
+.pestana[aria-selected="true"] { background: var(--cian); border-color: var(--cian); color: var(--marino); }
+.panel-quien { display: grid; grid-template-columns: 1.1fr 1fr; gap: 28px; align-items: center; max-width: 900px; margin: 0 auto; background: linear-gradient(180deg, var(--marino-2), #101a2e); border: 1px solid var(--linea); border-radius: 16px; padding: 24px; }
+.panel-quien svg { width: 100%; height: auto; display: block; }
+.panel-quien h3 { margin: 0 0 6px; font-size: 22px; } .panel-quien p { margin: 0 0 12px; color: var(--texto-2); }
+.panel-quien ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; font-size: 14.5px; color: var(--texto-2); }
+.panel-quien li i { color: var(--cian); margin-right: 8px; }
 .cta { text-align: center; padding: 72px 0; background: radial-gradient(ellipse at 50% 0%, rgba(0,229,255,.12), transparent 60%); }
 .cta h2 { font-size: clamp(26px, 3.6vw, 40px); margin: 0 0 12px; }
 footer { padding: 28px 0; color: var(--plata); font-size: 13px; }
@@ -117,7 +139,9 @@ footer .contenedor { display: flex; flex-wrap: wrap; gap: 8px 22px; } footer a:h
   .heroe .contenedor { grid-template-columns: 1fr; padding: 40px 0 48px; } .r3, .r4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .acceso { grid-template-columns: 1fr; } .acceso .lado { min-height: 260px; border-right: 0; border-bottom: 1px solid var(--linea); padding: 24px; }
 }
-@media (max-width: 620px) { .nav nav { display: none; } .r3, .r4 { grid-template-columns: 1fr; } .nav .contenedor { gap: 12px; } .nav .btn { margin-left: auto; } }
+@media (max-width: 620px) { .nav nav { display: none; } .r3, .r4 { grid-template-columns: 1fr; } .nav .contenedor { gap: 12px; } .nav .btn { margin-left: auto; }
+  .menu-btn { display: inline-grid; place-items: center; } .panel-quien { grid-template-columns: 1fr; padding: 18px; } }
+@media (min-width: 621px) { .menu-movil { display: none !important; } }
 </style>
 </head>
 <body>
@@ -129,7 +153,10 @@ footer .contenedor { display: flex; flex-wrap: wrap; gap: 8px 22px; } footer a:h
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00E5FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span>NVN <b>GPS</b></a>
     <nav aria-label="Secciones"><a href="#funciones">Funciones</a><a href="#como">Cómo funciona</a><a href="#para-quien">Para quién</a></nav>
     <a class="btn btn-secundario btn-chico" href="#" data-plataforma aria-disabled="true"><i class="bi bi-box-arrow-in-right"></i> Acceder</a>
-  </div></header>
+    <button type="button" class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="menu-movil" aria-label="Abrir menú"><i class="bi bi-list" aria-hidden="true"></i></button>
+  </div>
+  <div class="menu-movil" id="menu-movil" hidden><nav class="contenedor" aria-label="Menú móvil"><a href="#funciones">Funciones</a><a href="#como">Cómo funciona</a><a href="#para-quien">Para quién</a></nav></div>
+  </header>
 
   <section class="heroe" id="inicio">
     <div class="contenedor">
@@ -145,10 +172,10 @@ footer .contenedor { display: flex; flex-wrap: wrap; gap: 8px 22px; } footer a:h
       </div>
       <div class="escena" aria-label="Ilustración: vehículos recorriendo la ciudad con sus rutas iluminadas y el mapa del portal en un teléfono">
         <svg id="ciudad" viewBox="0 0 600 516" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg>
-        <div class="alerta-flot" role="img" aria-label="Ejemplo de alerta"><i class="bi bi-exclamation-octagon"></i><div><b>Exceso de velocidad</b><br><span style="color:var(--texto-2)">Unidad 07 · 84 km/h en zona de 60</span></div></div>
+        <div class="alerta-flot" id="alerta-flot" role="img" aria-label="Ejemplo de alerta: exceso de velocidad de la Unidad 07"><i class="bi bi-exclamation-triangle"></i><div><b>Exceso de velocidad</b><br><span style="color:var(--texto-2)">Unidad 07 · 84 km/h en zona de 60</span></div></div>
         <div class="telefono" aria-hidden="true">
           <div class="pantalla-mapa"><svg id="mini" viewBox="0 0 200 260" preserveAspectRatio="xMidYMid slice" style="width:100%;height:100%"></svg></div>
-          <div class="ficha"><b>Unidad 03 · Reparto</b><div class="fila"><span>En ruta</span><span class="pill">● en línea</span></div><div class="fila"><span>52 km/h</span><span>hace 4 s</span></div></div>
+          <div class="ficha"><b>Unidad 03 · Reparto</b><div class="fila"><span>En ruta</span><span class="pill">● en línea</span></div><div class="fila"><span>52 km/h</span><span>hace <span id="hace">4</span> s</span></div></div>
         </div>
       </div>
     </div>
@@ -177,11 +204,15 @@ footer .contenedor { display: flex; flex-wrap: wrap; gap: 8px 22px; } footer a:h
 
   <section class="bloque" id="para-quien"><div class="contenedor">
     <div class="titulo-sec"><small>Para quién</small><h2>Hecho para la operación diaria</h2></div>
-    <div class="rejilla r4">
-      <div class="tarjeta"><div class="ico"><i class="bi bi-box-seam"></i></div><h3>Reparto</h3><p>Entregas y rutas urbanas.</p></div>
-      <div class="tarjeta"><div class="ico"><i class="bi bi-truck"></i></div><h3>Carga</h3><p>Tractocamiones y rutas largas.</p></div>
-      <div class="tarjeta"><div class="ico"><i class="bi bi-thermometer-snow"></i></div><h3>Frío</h3><p>Unidades refrigeradas.</p></div>
-      <div class="tarjeta"><div class="ico"><i class="bi bi-tools"></i></div><h3>Servicio</h3><p>Camionetas y unidades de servicio.</p></div>
+    <div class="pestanas" role="tablist" aria-label="Tipo de operación">
+      <button type="button" class="pestana" role="tab" id="t-reparto" aria-controls="panel-quien" data-quien="reparto"><i class="bi bi-box-seam" aria-hidden="true"></i> Reparto</button>
+      <button type="button" class="pestana" role="tab" id="t-carga" aria-controls="panel-quien" data-quien="carga"><i class="bi bi-truck" aria-hidden="true"></i> Carga</button>
+      <button type="button" class="pestana" role="tab" id="t-frio" aria-controls="panel-quien" data-quien="frio"><i class="bi bi-thermometer-snow" aria-hidden="true"></i> Frío</button>
+      <button type="button" class="pestana" role="tab" id="t-servicio" aria-controls="panel-quien" data-quien="servicio"><i class="bi bi-tools" aria-hidden="true"></i> Servicio</button>
+    </div>
+    <div class="panel-quien" id="panel-quien" role="tabpanel" tabindex="0">
+      <div><h3 id="q-titulo"></h3><p id="q-texto"></p><ul id="q-lista"></ul></div>
+      <svg id="q-dibujo" viewBox="0 0 320 170" role="img" aria-labelledby="q-titulo"></svg>
     </div>
   </div></section>
 
@@ -253,6 +284,63 @@ function cuadro(ahora) {
   requestAnimationFrame(cuadro);
 }
 requestAnimationFrame(cuadro);
+
+/* ---------- Ideas de la prueba con Lovable (2026-10-26): barra, menú móvil, contador, aviso intermitente y pestañas ---------- */
+const barra = document.querySelector('.nav'), menuBtn = document.getElementById('menu-btn'), menu = document.getElementById('menu-movil');
+const pintarBarra = () => barra.classList.toggle('solida', scrollY > 8 || !menu.hidden);
+addEventListener('scroll', pintarBarra, { passive: true }); pintarBarra();
+function abrirMenu(abrir) {
+  menu.hidden = !abrir; menuBtn.setAttribute('aria-expanded', String(abrir)); menuBtn.setAttribute('aria-label', abrir ? 'Cerrar menú' : 'Abrir menú');
+  menuBtn.innerHTML = `<i class="bi bi-${abrir ? 'x-lg' : 'list'}" aria-hidden="true"></i>`; pintarBarra();
+}
+menuBtn.addEventListener('click', () => abrirMenu(menu.hidden));
+menu.addEventListener('click', (e) => { if (e.target.closest('a')) abrirMenu(false); });
+addEventListener('keydown', (e) => { if (e.key === 'Escape' && !menu.hidden) { abrirMenu(false); menuBtn.focus(); } });
+// «hace N s» de la unidad: avanza de 1 a 9 y vuelve a empezar
+let hace = 4; setInterval(() => { hace = hace >= 9 ? 1 : hace + 1; document.getElementById('hace').textContent = hace; }, 1000);
+// El aviso de exceso aparece y desaparece
+const aviso = document.getElementById('alerta-flot');
+setInterval(() => { const oculta = aviso.classList.toggle('oculta'); aviso.setAttribute('aria-hidden', String(oculta)); }, 3500);
+
+// Para quién: pestañas (clic o flechas del teclado) con su ilustración
+const QUIEN = {
+  reparto: { titulo: 'Reparto', texto: 'Entregas y rutas urbanas.', lista: ['Paradas por entrega y tiempo en cada cliente', 'Rutas del día en el mapa', 'Aviso si una unidad se desvía o se detiene de más'] },
+  carga: { titulo: 'Carga', texto: 'Tractocamiones y rutas largas.', lista: ['Seguimiento en carretera, kilómetro a kilómetro', 'Exceso de velocidad y paradas no programadas', 'Histórico del viaje completo'] },
+  frio: { titulo: 'Frío', texto: 'Unidades refrigeradas.', lista: ['Unidades del grupo Frío juntas en el mapa', 'Detenciones con motor encendido o apagado', 'Recorrido de cada entrega para revisar tiempos'] },
+  servicio: { titulo: 'Servicio', texto: 'Camionetas y unidades de servicio.', lista: ['Qué técnico está más cerca del sitio', 'Tiempo en cada atención', 'Botón de pánico (SOS) para el operador'] },
+};
+function dibujo(tipo) {
+  const llanta = (x) => `<circle cx="${x}" cy="134" r="15" fill="#0b1222" stroke="#94A3B8" stroke-width="3"/><circle cx="${x}" cy="134" r="5" fill="#94A3B8"/>`;
+  const cabina = (x, w = 62) => `<path d="M${x} 74 h${w - 22} l22 26 v34 h-${w} z" fill="#1b2742" stroke="#00E5FF" stroke-width="2"/><path d="M${x + 8} 82 h${w - 34} l14 16 h-${w - 20} z" fill="#0f2a3d" stroke="#00b8d4"/>`;
+  const caja = (x, w, h = 70) => `<rect x="${x}" y="${134 - h - 6}" width="${w}" height="${h}" rx="6" fill="#131d33" stroke="#00E5FF" stroke-width="2"/>`;
+  const piso = '<line x1="10" y1="150" x2="310" y2="150" stroke="#24365a" stroke-width="2" stroke-dasharray="14 10"/>';
+  const D = {
+    reparto: `${caja(40, 150)}${cabina(190)}<rect x="62" y="80" width="40" height="30" rx="3" fill="#00E5FF" opacity=".25"/><rect x="108" y="80" width="40" height="30" rx="3" fill="#00E5FF" opacity=".15"/>${llanta(80)}${llanta(228)}`,
+    carga: `${caja(14, 196, 76)}<rect x="210" y="120" width="14" height="8" fill="#94A3B8"/>${cabina(224, 76)}${llanta(46)}${llanta(84)}${llanta(176)}${llanta(268)}`,
+    frio: `${caja(40, 150)}<g transform="translate(115 89)" stroke="#00E5FF" stroke-width="3" stroke-linecap="round"><path d="M0 -22 V22 M-19 -11 L19 11 M-19 11 L19 -11"/></g><text x="115" y="132" text-anchor="middle" fill="#94A3B8" font-size="12" font-family="Inter, sans-serif">-18 °C</text>${cabina(190)}${llanta(80)}${llanta(228)}`,
+    servicio: `<path d="M60 96 h120 v38 h-120 z" fill="#131d33" stroke="#00E5FF" stroke-width="2"/><path d="M70 84 h96" stroke="#94A3B8" stroke-width="4" stroke-linecap="round"/><path d="M78 76 v8 M100 76 v8 M122 76 v8 M144 76 v8" stroke="#94A3B8" stroke-width="3"/>${cabina(180)}<path d="M96 106 l14 14 M110 106 l-14 14" stroke="#f59e0b" stroke-width="3" stroke-linecap="round"/>${llanta(96)}${llanta(218)}`,
+  };
+  return `${piso}${D[tipo]}`;
+}
+const pestanas = [...document.querySelectorAll('[data-quien]')];
+function elegir(tipo, enfocar = false) {
+  const q = QUIEN[tipo];
+  pestanas.forEach((b) => { const on = b.dataset.quien === tipo; b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1; if (on && enfocar) b.focus(); });
+  document.getElementById('panel-quien').setAttribute('aria-labelledby', `t-${tipo}`);
+  document.getElementById('q-titulo').textContent = q.titulo;
+  document.getElementById('q-texto').textContent = q.texto;
+  document.getElementById('q-lista').innerHTML = q.lista.map((x) => `<li><i class="bi bi-check2-circle" aria-hidden="true"></i>${x}</li>`).join('');
+  document.getElementById('q-dibujo').innerHTML = dibujo(tipo);
+}
+pestanas.forEach((b, i) => {
+  b.addEventListener('click', () => elegir(b.dataset.quien));
+  b.addEventListener('keydown', (e) => {
+    const j = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: pestanas.length - 1 }[e.key];
+    if (j === undefined) return;
+    e.preventDefault(); elegir(pestanas[(j + pestanas.length) % pestanas.length].dataset.quien, true);
+  });
+});
+elegir('reparto');
 
 /* ---------- Dirección vigente de la plataforma: plataforma.json (la actualiza WebOps cuando cambia) ---------- */
 fetch('plataforma.json', { cache: 'no-store' }).then((r) => (r.ok ? r.json() : Promise.reject())).then((c) => {
